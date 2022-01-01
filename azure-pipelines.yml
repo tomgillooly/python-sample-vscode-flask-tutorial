@@ -32,5 +32,11 @@ steps:
 
 - script: |
     pip install pytest pytest-azurepipelines
-    pytest
+    pytest --junitxml=result.xml
   displayName: 'pytest'
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFiles: 'result.xml'
+    testRunTitle: 'Publish test results for Python $(python.version)'
